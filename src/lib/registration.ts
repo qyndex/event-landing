@@ -1,7 +1,10 @@
+import { supabase, isSupabaseConfigured } from "./supabase";
+
 export interface RegistrationData {
   name: string;
   email: string;
   ticket: string;
+  company?: string;
 }
 
 export interface ValidationResult {
@@ -9,7 +12,12 @@ export interface ValidationResult {
   errors: Record<string, string>;
 }
 
-const TICKET_TYPES = ["general", "vip"] as const;
+export interface SubmitResult {
+  success: boolean;
+  error?: string;
+}
+
+const TICKET_TYPES = ["general", "vip", "workshop"] as const;
 export type TicketType = (typeof TICKET_TYPES)[number];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -35,4 +43,33 @@ export function validateRegistration(data: RegistrationData): ValidationResult {
   }
 
   return { valid: Object.keys(errors).length === 0, errors };
+}
+
+/** Submit registration to Supabase. Returns success/error. */
+export async function submitRegistration(
+  data: RegistrationData
+): Promise<SubmitResult> {
+  if (!isSupabaseConfigured()) {
+    return { success: true }; // Graceful no-op when Supabase is not set up
+  }
+
+  try {
+    const { error } = await supabase.from("registrations").insert({
+      name: data.name.trim(),
+      email: data.email.trim().toLowerCase(),
+      company: data.company?.trim() ?? "",
+      ticket_type: data.ticket,
+    });
+
+    if (error) {
+      if (error.code === "23505") {
+        return { success: false, error: "This email is already registered." };
+      }
+      return { success: false, error: "Registration failed. Please try again." };
+    }
+
+    return { success: true };
+  } catch {
+    return { success: false, error: "Network error. Please try again." };
+  }
 }

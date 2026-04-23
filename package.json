@@ -15,6 +15,7 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
     "astro": "^6.0.6",
     "@astrojs/tailwind": "^6.0.2"
   },
