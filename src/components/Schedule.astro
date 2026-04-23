@@ -1,0 +1,39 @@
+---
+const days = [
+  {
+    date: "June 15",
+    sessions: [
+      { time: "09:00", title: "Registration & Coffee" },
+      { time: "10:00", title: "Keynote: The Future of Computing" },
+      { time: "12:00", title: "Lunch Break" },
+      { time: "14:00", title: "Workshop: Hands-on AI" },
+    ],
+  },
+  {
+    date: "June 16",
+    sessions: [
+      { time: "09:00", title: "Open Source at Scale" },
+      { time: "11:00", title: "Panel: DevOps Best Practices" },
+      { time: "14:00", title: "Debugging the Impossible" },
+    ],
+  },
+];
+---
+<section class="py-16 px-4 bg-gray-800">
+  <h2 class="text-3xl font-bold text-center mb-10">Schedule</h2>
+  <div class="max-w-3xl mx-auto space-y-10">
+    {days.map((day) => (
+      <div>
+        <h3 class="text-xl font-semibold mb-4">{day.date}</h3>
+        <ul class="space-y-2">
+          {day.sessions.map((s) => (
+            <li class="flex gap-4">
+              <span class="font-mono text-sm opacity-60 w-14">{s.time}</span>
+              <span>{s.title}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

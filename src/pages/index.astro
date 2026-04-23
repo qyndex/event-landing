@@ -1,0 +1,19 @@
+---
+import Countdown from "../components/Countdown.astro";
+import Speakers from "../components/Speakers.astro";
+import Schedule from "../components/Schedule.astro";
+import RegistrationForm from "../components/RegistrationForm.astro";
+---
+<html lang="en">
+<head><meta charset="utf-8" /><title>DevConf 2026</title></head>
+<body class="bg-gray-900 text-white">
+  <header class="text-center py-16">
+    <h1 class="text-5xl font-extrabold">DevConf 2026</h1>
+    <p class="text-xl mt-2 opacity-80">June 15-17, San Francisco</p>
+  </header>
+  <Countdown targetDate="2026-06-15T09:00:00Z" />
+  <Speakers />
+  <Schedule />
+  <RegistrationForm />
+</body>
+</html>

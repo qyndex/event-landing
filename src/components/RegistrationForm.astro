@@ -1,0 +1,36 @@
+---
+---
+<section class="py-16 px-4 text-center" id="register">
+  <h2 class="text-3xl font-bold mb-6">Register Now</h2>
+  <form class="max-w-md mx-auto space-y-4" id="reg-form">
+    <input name="name" type="text" required placeholder="Full Name"
+      class="w-full border rounded px-3 py-2 text-gray-900" />
+    <input name="email" type="email" required placeholder="Email"
+      class="w-full border rounded px-3 py-2 text-gray-900" />
+    <select name="ticket" required class="w-full border rounded px-3 py-2 text-gray-900">
+      <option value="">Select ticket type</option>
+      <option value="general">General ($199)</option>
+      <option value="vip">VIP ($499)</option>
+    </select>
+    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded font-semibold hover:bg-blue-700">
+      Reserve Spot
+    </button>
+    <p id="reg-error" class="text-red-400 text-sm hidden"></p>
+  </form>
+</section>
+
+<script>
+  const form = document.getElementById("reg-form") as HTMLFormElement;
+  const errEl = document.getElementById("reg-error")!;
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    if (!data.get("name") || !data.get("email") || !data.get("ticket")) {
+      errEl.textContent = "All fields are required.";
+      errEl.classList.remove("hidden");
+      return;
+    }
+    errEl.classList.add("hidden");
+    alert("Registration submitted!");
+  });
+</script>

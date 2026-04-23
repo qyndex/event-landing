@@ -1,0 +1,29 @@
+---
+interface Props { targetDate: string; }
+const { targetDate } = Astro.props;
+---
+<section class="py-12 text-center" id="countdown" data-target={targetDate}>
+  <h2 class="text-2xl font-bold mb-6">Countdown</h2>
+  <div class="flex justify-center gap-8 text-4xl font-mono">
+    <div><span id="cd-days">--</span><p class="text-sm">Days</p></div>
+    <div><span id="cd-hours">--</span><p class="text-sm">Hours</p></div>
+    <div><span id="cd-mins">--</span><p class="text-sm">Min</p></div>
+    <div><span id="cd-secs">--</span><p class="text-sm">Sec</p></div>
+  </div>
+</section>
+
+<script>
+  const el = document.getElementById("countdown")!;
+  const target = new Date(el.dataset.target!).getTime();
+  setInterval(() => {
+    const diff = Math.max(0, target - Date.now());
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById("cd-days")!.textContent = String(d);
+    document.getElementById("cd-hours")!.textContent = String(h);
+    document.getElementById("cd-mins")!.textContent = String(m);
+    document.getElementById("cd-secs")!.textContent = String(s);
+  }, 1000);
+</script>
