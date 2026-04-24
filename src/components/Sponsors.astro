@@ -1,0 +1,58 @@
+---
+import type { Sponsor } from "../lib/schedule";
+
+interface Props {
+  sponsors: Sponsor[];
+}
+
+const { sponsors } = Astro.props;
+
+const tiers = ["platinum", "gold", "silver"] as const;
+const tierConfig = {
+  platinum: { label: "Platinum Sponsors", size: "w-32 h-32", cols: "grid-cols-1 sm:grid-cols-2" },
+  gold: { label: "Gold Sponsors", size: "w-24 h-24", cols: "grid-cols-2 sm:grid-cols-3" },
+  silver: { label: "Silver Sponsors", size: "w-16 h-16", cols: "grid-cols-3 sm:grid-cols-4" },
+};
+---
+
+<section id="sponsors" class="py-20 px-4">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-4">Our Sponsors</h2>
+    <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+      DevConf 2026 is made possible by the generous support of our sponsors.
+    </p>
+
+    {tiers.map((tier) => {
+      const tierSponsors = sponsors.filter((s) => s.tier === tier);
+      if (!tierSponsors.length) return null;
+      const config = tierConfig[tier];
+      return (
+        <div class="mb-12">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-500 text-center mb-6">
+            {config.label}
+          </h3>
+          <div class={`grid ${config.cols} gap-8 justify-items-center items-center max-w-3xl mx-auto`}>
+            {tierSponsors.map((sponsor) => (
+              <a
+                href={sponsor.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex flex-col items-center gap-3 p-4 rounded-xl hover:bg-gray-800/50 transition-colors"
+                aria-label={`Visit ${sponsor.name} website`}
+              >
+                <img
+                  src={sponsor.logoUrl}
+                  alt={`${sponsor.name} logo`}
+                  class={`${config.size} rounded-lg bg-gray-800 p-2 object-contain group-hover:scale-105 transition-transform`}
+                />
+                <span class="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">
+                  {sponsor.name}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</section>
